@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JobPilot — your job-hunt command center</title>
+<meta name="description" content="Search every job board at once, beat ATS filters, generate outreach, and track every application — without risking your accounts.">
+<link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='9' fill='%23ffb020'/%3E%3Cpath d='M16 6l3 7 7 .5-5.4 4.5 1.8 6.9L16 21.2 9.6 25l1.8-6.9L6 13.5 13 13z' fill='%23231400'/%3E%3C/svg%3E">
+</head>
+<body>
+<div class="shell">
+
+  <!-- TOP BAR -->
+  <header class="topbar">
+    <div class="brand">
+      <span class="brand__mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.5 6.5L21 9l-5 4 1.5 7L12 16.5 6.5 20 8 13 3 9l6.5-.5z" fill="currentColor"/></svg>
+      </span>
+      Job<em>Pilot</em>
+      <span class="brand__tag">apply smarter, not blindly</span>
+    </div>
+    <nav class="nav" aria-label="Sections">
+      <button id="nav-launchpad">Launchpad</button>
+      <button id="nav-scanner">Match Scanner</button>
+      <button id="nav-toolkit">Outreach</button>
+      <button id="nav-tracker">Tracker</button>
+      <button id="nav-dashboard">Dashboard</button>
+      <button id="nav-profile">Profile</button>
+    </nav>
+  </header>
+
+  <!-- ========================= LAUNCHPAD ========================= -->
+  <section id="view-launchpad" class="view">
+    <div class="vhead">
+      <div class="eyebrow">Launchpad</div>
+      <h1>Search every board in one shot.</h1>
+      <p>Type your keywords once, arm the sites you want, and JobPilot opens each site's search pre-filled — so you skip the busywork and go straight to applying. Your logins never leave your browser.</p>
+    </div>
+
+    <div class="panel">
+      <div class="launchbar">
+        <label class="fld" style="margin:0"><span>Keywords / role</span>
+          <input id="lp-kw" placeholder="e.g. Android developer, React, Node.js"></label>
+        <label class="fld" style="margin:0"><span>Location (optional)</span>
+          <input id="lp-loc" placeholder="e.g. Remote, Noida, Bengaluru"></label>
+        <button id="lp-launch" class="btn btn--primary" style="height:44px">🚀 Launch searches</button>
+      </div>
+
+      <div class="site-toolrow">
+        <span class="muted" id="lp-count">10 sites armed</span>
+        <div>
+          <button class="linklike" id="lp-all">Select all</button>
+          <button class="linklike" id="lp-none">Clear</button>
+        </div>
+      </div>
+      <div id="site-grid" class="site-grid"></div>
+
+      <div id="lp-results" class="results hidden"></div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h3>Recent searches</h3><span class="muted">one tap to re-run</span></div>
+      <div id="lp-saved" class="saved-wrap"></div>
+    </div>
+  </section>
+
+  <!-- ========================= SCANNER ========================= -->
+  <section id="view-scanner" class="view hidden">
+    <div class="vhead">
+      <div class="eyebrow">Match Scanner</div>
+      <h1>Know your match before you hit Apply.</h1>
+      <p>Most resumes are filtered by software, not people. Paste a job description and your skills JobPilot shows your keyword match and exactly which terms to add (only the true ones) so you clear the filter.</p>
+    </div>
+    <div class="panel">
+      <div class="grid2">
+        <label class="fld"><span>Job description — paste it here</span>
+          <textarea id="sc-jd" style="min-height:200px" placeholder="Paste the full JD…"></textarea></label>
+        <label class="fld"><span>Your skills / resume keywords <span class="muted">(auto-fills from Profile)</span></span>
+          <textarea id="sc-skills" style="min-height:200px" placeholder="Kotlin, Jetpack Compose, React, Node.js, Express, MongoDB…"></textarea></label>
+      </div>
+      <button id="sc-run" class="btn btn--primary">Scan match</button>
+      <div id="sc-out" class="results hidden"></div>
+    </div>
+  </section>
+
+  <!-- ========================= TOOLKIT ========================= -->
+  <section id="view-toolkit" class="view hidden">
+    <div class="vhead">
+      <div class="eyebrow">Outreach</div>
+      <h1>The messages that actually get replies.</h1>
+      <p>A cold application waits in a pile. A referral request gets read. Fill the fields once and generate a tailored cover letter, a referral ask, or a follow-up — edit, then copy.</p>
+    </div>
+    <div class="panel">
+      <div class="grid2">
+        <div>
+          <label class="fld"><span>Your name</span><input id="tk-name" placeholder="Yatin Kabadwal"></label>
+          <label class="fld"><span>Role</span><input id="tk-role" placeholder="Android Developer"></label>
+          <label class="fld"><span>Company</span><input id="tk-company" placeholder="Envertix Technologies"></label>
+          <label class="fld"><span>Your top skills</span><input id="tk-skills" placeholder="Kotlin, Jetpack Compose, MERN"></label>
+          <label class="fld"><span>One recent win <span class="muted">(for the cover letter)</span></span>
+            <input id="tk-win" placeholder="shipped a fee-ledger engine and fixed a prod payment bug"></label>
+          <div class="btnrow">
+            <button id="tk-cover" class="btn btn--ghost sm">Cover letter</button>
+            <button id="tk-refer" class="btn btn--ghost sm">Referral ask</button>
+            <button id="tk-follow" class="btn btn--ghost sm">Follow-up</button>
+          </div>
+        </div>
+        <div>
+          <label class="fld" style="height:100%;display:flex;flex-direction:column"><span>Generated message — edit anything</span>
+            <textarea id="tk-out" style="flex:1;min-height:300px" placeholder="Pick a message type on the left…"></textarea></label>
+          <div class="btnrow">
+            <button id="tk-copy" class="btn btn--mint sm">Copy message</button>
+            <button id="tk-ai" class="btn btn--ghost sm">✦ Enhance with AI</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= TRACKER ========================= -->
+  <section id="view-tracker" class="view hidden">
+    <div class="vhead">
+      <div class="eyebrow">Tracker</div>
+      <h1>Every application, one board.</h1>
+      <p>Log what you apply to, move it through the pipeline, and let JobPilot flag anything with no reply after a week so you know exactly when to follow up. The ★ finds someone at the company to ask for a referral.</p>
+    </div>
+    <div class="panel">
+      <div class="filterbar">
+        <button class="filterchip on" data-f="all">All</button>
+        <button class="filterchip" data-f="saved">Saved</button>
+        <button class="filterchip" data-f="applied">Applied</button>
+        <button class="filterchip" data-f="interview">Interview</button>
+        <button class="filterchip" data-f="offer">Offer</button>
+        <button class="filterchip" data-f="rejected">Rejected</button>
+      </div>
+      <div class="trhead">
+        <span>Company</span><span>Role</span><span>Site</span><span>Status</span><span>Date</span><span></span>
+      </div>
+      <div id="tracker-body"></div>
+      <div id="tracker-empty" class="empty">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <p>No applications yet. Hit <b>Add application</b> after you apply — or launch searches from the Launchpad.</p>
+      </div>
+      <div class="btnrow" style="margin-top:16px">
+        <button id="tr-add" class="btn btn--primary sm">＋ Add application</button>
+        <button id="tr-csv" class="btn btn--ghost sm">Export CSV</button>
+        <button id="tr-json" class="btn btn--ghost sm">Backup (JSON)</button>
+        <label class="btn btn--ghost sm" style="cursor:pointer">Restore backup
+          <input id="tr-import" type="file" accept="application/json" style="display:none"></label>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= DASHBOARD ========================= -->
+  <section id="view-dashboard" class="view hidden">
+    <div class="vhead">
+      <div class="eyebrow">Dashboard</div>
+      <h1>Your momentum, at a glance.</h1>
+      <p>The real reason people don't land jobs isn't talent — it's stopping too early. Hit your daily target, keep the streak alive, and watch your pipeline fill.</p>
+    </div>
+
+    <div class="panel">
+      <div class="dbtop">
+        <div class="ring" id="ring"><span class="ring__num" id="ring-num">0/5</span><span class="ring__cap" id="ring-cap">applied today</span></div>
+        <div class="statrow">
+          <div class="stat"><div class="stat__n amber" id="stat-streak">0</div><div class="stat__l">Day streak</div></div>
+          <div class="stat"><div class="stat__n" id="stat-total">0</div><div class="stat__l">Total tracked</div></div>
+          <div class="stat"><div class="stat__n mint" id="stat-reply">—</div><div class="stat__l">Response rate</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="grid2">
+      <div class="panel">
+        <div class="ph"><h3>Pipeline</h3><span class="muted">by status</span></div>
+        <div id="pipeline" class="pipeline"></div>
+      </div>
+      <div class="panel">
+        <div class="ph"><h3>Where you're applying</h3><span class="muted">by site</span></div>
+        <div id="bysite"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h3>Summary report</h3><span class="muted">share it or keep a record</span></div>
+      <p class="muted sm" style="margin-top:-6px">A clean text summary of everything — totals, response rate, breakdown by site and status, and your recent applications.</p>
+      <div class="btnrow">
+        <button id="db-report" class="btn btn--primary sm">Copy summary</button>
+        <button id="db-download" class="btn btn--ghost sm">Download .txt</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================= PROFILE ========================= -->
+  <section id="view-profile" class="view hidden">
+    <div class="vhead">
+      <div class="eyebrow">Profile</div>
+      <h1>Set it once, reuse everywhere.</h1>
+      <p>These details pre-fill your searches, scanner, and outreach messages. Everything is stored only in this browser — nothing is uploaded.</p>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h3>You</h3></div>
+      <div class="grid2">
+        <label class="fld"><span>Name</span><input id="pf-name" placeholder="Yatin Kabadwal"></label>
+        <label class="fld"><span>Preferred location</span><input id="pf-loc" placeholder="Remote / Noida"></label>
+        <label class="fld"><span>Default search keywords</span><input id="pf-kw" placeholder="Android developer, MERN"></label>
+        <label class="fld"><span>Daily application goal</span><input id="pf-goal" type="number" min="1" value="5"></label>
+      </div>
+      <label class="fld"><span>Your skills / resume keywords</span>
+        <textarea id="pf-skills" placeholder="Kotlin, Jetpack Compose, MVVM, React, Node.js, Express, MongoDB, Firebase…"></textarea></label>
+      <div class="grid3">
+        <label class="fld"><span>Resume link</span><input id="pf-resume" placeholder="drive/portfolio link"></label>
+        <label class="fld"><span>Portfolio</span><input id="pf-portfolio" placeholder="yoursite.vercel.app"></label>
+        <label class="fld"><span>LinkedIn</span><input id="pf-linkedin" placeholder="linkedin.com/in/…"></label>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph"><h3>AI enhance <span class="muted">— optional</span></h3></div>
+      <div class="note note--warn" style="margin-bottom:16px">
+        <span class="note__ic">✦</span>
+        <div>The <b>Enhance with AI</b> button in Outreach is optional. To use it, paste your own Anthropic API key below — it's stored only in your browser and used directly from your device. All other features work with no key.</div>
+      </div>
+      <label class="fld"><span>Anthropic API key</span>
+        <div class="keyrow">
+          <input id="pf-key" type="password" placeholder="sk-ant-…">
+          <button id="pf-key-toggle" class="btn btn--ghost sm" type="button">Show</button>
+        </div></label>
+      <label class="fld"><span>Model</span><input id="pf-model" placeholder="claude-sonnet-4-6"></label>
+    </div>
+
+    <div class="panel">
+      <div class="btnrow">
+        <button id="pf-save" class="btn btn--primary">Save profile</button>
+        <button id="pf-wipe" class="btn btn--ghost">Erase all my data</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p><b>JobPilot</b> runs entirely in your browser. It opens each job board's own search — it never logs in or submits for you, so your accounts stay safe. Built to help people apply smarter, not blindly. Made with ❤️ for everyone grinding the job hunt.</p>
+  </footer>
+</div>
+
+<div id="toasts"></div>
+
+<script src="js/config.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
